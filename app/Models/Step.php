@@ -14,11 +14,19 @@ class Step extends Model
         'uuid'
     ];
 
+    /**
+     * [getRouteKeyName description]
+     * @return [type] [description]
+     */
     public function getRouteKeyName()
     {
         return 'uuid';
     }
 
+    /**
+     * [boot description]
+     * @return [type] [description]
+     */
     public static function boot()
     {
         parent::boot();
@@ -28,6 +36,10 @@ class Step extends Model
         });
     }
 
+    /**
+     * [afterOrder description]
+     * @return [type] [description]
+     */
     public function afterOrder()
     {
         $adjacent = self::where('order', '>', $this->order)
@@ -41,6 +53,10 @@ class Step extends Model
         return ($this->order + $adjacent->order) / 2;
     }
 
+    /**
+     * [beforeOrder description]
+     * @return [type] [description]
+     */
     public function beforeOrder()
     {
         $adjacent = self::where('order', '<', $this->order)
@@ -52,5 +68,14 @@ class Step extends Model
         }
 
         return ($this->order + $adjacent->order) / 2;
+    }
+
+    /**
+     * [snippet description]
+     * @return [type] [description]
+     */
+    public function snippet()
+    {
+        return $this->belongsTo(Snippet::class);
     }
 }
