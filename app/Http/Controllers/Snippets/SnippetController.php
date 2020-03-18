@@ -32,6 +32,19 @@ class SnippetController extends Controller
     {
         $snippet = $request->user()->snippets()->create();
 
-        dd($snippet);
+        return fractal()
+                ->item($snippet)
+                ->transformWith(new SnippetTransformer())
+                ->toArray();
+    }
+
+    public function update(Snippet $snippet, Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'nullable',
+            'is_public' => 'nullable|boolean'
+        ]);
+        
+        $snippet->update($request->only('title', 'is_public'));
     }
 }

@@ -9,7 +9,8 @@ class Snippet extends Model
 {
     protected $fillable = [
         'uuid',
-        'title'
+        'title',
+        'is_public'
     ];
 
     public static function boot()

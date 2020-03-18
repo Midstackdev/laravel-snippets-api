@@ -36,6 +36,7 @@ class StepTransformer extends TransformerAbstract
             'uuid' => $step->uuid,
             'order' => $step->order ?: '',
             'title' => $step->title ?: '',
+            'body' => $step->body ?: '',
         ];
     }
 }
