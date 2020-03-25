@@ -16,7 +16,20 @@ class SnippetController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth:api'])->only('strore');
+        $this->middleware(['auth:api'])->only('strore', 'update');
+    }
+
+    public function index(Request $request)
+    {
+        return fractal()
+            ->collection(
+                Snippet::take($request->get('limit', 10))->latest()->public()->get()
+            )
+            ->parseIncludes([
+                'author'
+            ])
+            ->transformWith(new SnippetTransformer())
+            ->toArray();
     }
 
     /**
@@ -32,6 +45,7 @@ class SnippetController extends Controller
                 ->item($snippet)
                 ->transformWith(new SnippetTransformer())
                 ->parseIncludes([
+                    'steps',
                     'author',
                     'user'
                 ])
@@ -69,5 +83,12 @@ class SnippetController extends Controller
         ]);
         
         $snippet->update($request->only('title', 'is_public'));
+    }
+
+    public function destroy(Snippet $snippet, Request $request)
+    {
+        $this->authorize('destroy', $snippet);
+
+        $snippet->delete();
     }
 }

@@ -14,7 +14,7 @@ class SnippetTransformer extends TransformerAbstract
      * @var array
      */
     protected $defaultIncludes = [
-        'steps'
+        
     ];
     
     /**
@@ -24,7 +24,8 @@ class SnippetTransformer extends TransformerAbstract
      */
     protected $availableIncludes = [
         'author',
-        'user'
+        'user',
+        'steps'
     ];
     
     /**
