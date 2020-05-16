@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Transformers\Snippets\SnippetTransformer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Snippet extends Model
 {
+    use Searchable;
+
     protected $fillable = [
         'uuid',
         'title',
@@ -53,5 +57,17 @@ class Snippet extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function toSearchableArray()
+    {
+        return fractal()
+            ->item($this)
+            ->transformWith(new SnippetTransformer())
+            ->parseIncludes([
+                'author',
+                'steps'
+            ])
+            ->toArray();
     }
 }
